@@ -2,7 +2,7 @@ import pandas as pd
 import sqlite3
 
 # 엑셀 파일 로드
-file_path = 'F1_DB8.xlsx' # 코드와 동일경로
+file_path = 'F1_Data_9.xlsx' # 코드와 동일경로
 excel_data = pd.ExcelFile(file_path)
 
 conn = sqlite3.connect('F1_2024.db')
@@ -61,6 +61,7 @@ for sheet_name in excel_data.sheet_names[1:]:
     sheet_data = excel_data.parse(sheet_name)
     for _, row in sheet_data.iterrows():
         try:
+            # 엑셀 컬럼에서 데이터 추출
             driver_no = int(row['Unnamed: 2'])
             driver_name = row['Unnamed: 3']
             team_name = row['Unnamed: 10']
