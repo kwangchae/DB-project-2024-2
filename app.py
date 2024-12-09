@@ -18,6 +18,14 @@ def index():
     conn.close()
     return render_template('index.html', drivers=drivers, teams=teams)
 
+# 드라이버 페이지 라우팅
+@app.route('/drivers/')
+def show_drivers():
+    conn = get_db_connection()
+    drivers = conn.execute('SELECT * FROM Driver ORDER BY DriverPts DESC').fetchall()
+    conn.close()
+    return render_template('drivers.html', drivers=drivers)
+
 
 if __name__ == '__main__':
     app.debug = True

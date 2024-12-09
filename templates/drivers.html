@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1 드라이버 목록</title>
+</head>
+<body>
+    <h1>F1 드라이버 목록</h1>
+    
+    <div class="nav">
+        <div class="nav-links">
+            <a href="/">홈</a>
+            <a href="/drivers">드라이버 목록</a>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>순위</th>
+                <th>드라이버 정보</th>
+                <th>팀</th>
+                <th>포인트</th>
+                <th>드라이버 코멘트</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for driver in drivers %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>
+                    <div class="driver-info">
+                        <span class="driver-number">#{{ driver.DriverNo }}</span>
+                        {{ driver.DriverName }}</a>
+                    </div>
+                </td>
+                <td>{{ driver.TeamID }}</a></td>
+                <td>{{ driver.DriverPts }}</td>
+                <td>{{ driver.DriverComment }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div style="margin-top: 20px; text-align: center;">
+        <p>총 {{ drivers|length }}명의 드라이버가 등록되어 있습니다.</p>
+    </div>
+</body>
+</html>
