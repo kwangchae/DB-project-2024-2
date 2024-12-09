@@ -6,12 +6,14 @@
     <title>F1 드라이버 목록</title>
 </head>
 <body>
-    <h1>F1 드라이버 목록</h1>
+    <h1>F1 드라이버 챔피언십</h1>
     
     <div class="nav">
         <div class="nav-links">
             <a href="/">홈</a>
             <a href="/drivers">드라이버 목록</a>
+            <a href="/teams">팀 목록</a>
+            <a href="/circuits">서킷 목록</a>
         </div>
     </div>
 
@@ -45,6 +47,9 @@
 
     <div style="margin-top: 20px; text-align: center;">
         <p>총 {{ drivers|length }}명의 드라이버가 등록되어 있습니다.</p>
+        {% if drivers %}
+        <p>현재 선두: <strong>{{ drivers[0].DriverName }}</strong> ({{ drivers[0].DriverPts }} 포인트)</p>
+        {% endif %}
     </div>
 </body>
 </html>

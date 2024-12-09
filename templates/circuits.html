@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1 서킷 목록</title>
+</head>
+<body>
+    <h1>F1 그랑프리 일정</h1>
+    
+    <div class="nav">
+        <div class="nav-links">
+            <a href="/">홈</a>
+            <a href="/drivers">드라이버 목록</a>
+            <a href="/teams">팀 목록</a>
+            <a href="/circuits">서킷 목록</a>
+        </div>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>라운드</th>
+                <th>서킷</th>
+                <th>국가</th>
+                <th>날짜</th>
+                <th>서킷 코멘트</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for circuit in circuits %}
+            <tr>
+                <td>
+                    {{ circuit.CircuitID }}
+                </td>
+                <td>
+                    {{ circuit.CircuitName }}
+                </td>
+                <td>
+                    {{ circuit.Country }}
+                </td>
+                <td>
+                    {{ circuit.Date }}
+                </td>
+                <td>
+                    {{ circuit.CircuitComment }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div style="margin-top: 20px; text-align: center;">
+        <p>총 {{ circuits|length }}개의 그랑프리가 있습니다.</p>
+        {% if circuits %}
+        <p>다음 경기: <strong>Bahrain International_PreSeason(2025-02-28)</strong></p>
+        {% endif %}
+    </div>
+</body>
+</html>

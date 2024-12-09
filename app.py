@@ -26,6 +26,21 @@ def show_drivers():
     conn.close()
     return render_template('drivers.html', drivers=drivers)
 
+# 팀 목록 
+@app.route('/teams/')
+def show_teams():
+    conn = get_db_connection()
+    teams = conn.execute('SELECT * FROM Team ORDER BY TeamPts DESC').fetchall()
+    conn.close()
+    return render_template('teams.html', teams=teams)
+
+# 서킷 목록
+@app.route('/circuits/')
+def show_circuits():
+    conn = get_db_connection()
+    circuits = conn.execute('SELECT * FROM Circuit ORDER BY Date').fetchall()
+    conn.close()
+    return render_template('circuits.html', circuits=circuits)
 
 if __name__ == '__main__':
     app.debug = True
