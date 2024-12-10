@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ driver.DriverName }} - F1 드라이버 상세 정보</title>
+</head>
+<body>
+    <div class="nav">
+        <div class="nav-links">
+            <a href="/">홈</a>
+            <a href="/drivers">드라이버 목록</a>
+            <a href="/teams">팀 목록</a>
+            <a href="/circuits">서킷 목록</a>
+        </div>
+    </div>
+
+    <div class="driver-header">
+        <span class="driver-number">#{{ driver.DriverNo }}</span>
+        <div class="driver-info">
+            <h1>{{ driver.DriverName }}</h1>
+            <p class="driver-team">소속팀: {{ driver.TeamID }}</a></p>
+            <p class="driver-points">현재 포인트: {{ driver.DriverPts }}</p>
+        </div>
+    </div>
+
+    <h2>2024 시즌 경기 결과</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>그랑프리</th>
+                <th>순위</th>
+                <th>포인트</th>
+                <th>기록</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result in results %}
+            <tr class="podium-{{ result.Position if result.Position <= 3 else '' }}">
+                <td>{{ result.CircuitName }}</td>
+                <td>P{{ result.Position }}</td>
+                <td>{{ result.Pts }}</td>
+                <td>{{ result.Time }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div style="margin-top: 20px; text-align: center;">
+        <p>총 {{ results|length }}개의 그랑프리에 참가</p>
+        {% set podiums = results|selectattr('Position', '<=', 3)|list %}
+        {% if podiums %}
+        <p>시즌 포디움 횟수: {{ podiums|length }}회</p>
+        {% endif %}
+    </div>
+</body>
+</html>

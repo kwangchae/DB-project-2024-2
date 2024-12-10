@@ -42,6 +42,20 @@ def show_circuits():
     conn.close()
     return render_template('circuits.html', circuits=circuits)
 
+@app.route('/driver/<int:driver_no>')
+def driver_details(driver_no):
+    conn = get_db_connection()
+    driver = conn.execute('SELECT * FROM Driver WHERE DriverNo = ?', (driver_no,)).fetchone()
+    results = conn.execute('''
+        SELECT r.*, c.CircuitName
+        FROM Results r, Circuit c
+        WHERE r.CircuitID = c.CircuitID
+        AND r.DriverNo = ?
+        ORDER BY c.Date;
+    ''', (driver_no,)).fetchall()
+    conn.close()
+    return render_template('driver_details.html', driver=driver, results=results)
+
 if __name__ == '__main__':
     app.debug = True
     app.run(host='127.0.0.1', port=5000)
