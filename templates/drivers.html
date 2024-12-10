@@ -37,7 +37,9 @@
                         <a href="{{ url_for('driver_details', driver_no=driver.DriverNo) }}">{{ driver.DriverName }}</a>
                     </div>
                 </td>
-                <td>{{ driver.TeamID }}</a></td>
+                <td>
+                    <a href="{{ url_for('team_details', team_name=driver.TeamID) }}">{{ driver.TeamID }}</a>
+                </td>
                 <td>{{ driver.DriverPts }}</td>
                 <td>{{ driver.DriverComment }}</td>
             </tr>

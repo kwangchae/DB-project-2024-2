@@ -28,18 +28,12 @@
         <tbody>
             {% for team in teams %}
             <tr>
+                <td>{{ loop.index }}</td>
                 <td>
-                    {{ loop.index }}
+                    <a href="{{ url_for('team_details', team_name=team.TeamName) }}">{{ team.TeamName }}</a>
                 </td>
-                <td>
-                    {{ team.TeamName }}
-                </td>
-                <td>
-                    {{ team.TeamPts }}
-                </td>
-                <td>
-                    {{ team.TeamComment }}
-                </td>
+                <td>{{ team.TeamPts }}</td>
+                <td>{{ team.TeamComment }}</td>
             </tr>
             {% endfor %}
         </tbody>

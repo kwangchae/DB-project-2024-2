@@ -29,21 +29,11 @@
         <tbody>
             {% for circuit in circuits %}
             <tr>
-                <td>
-                    {{ circuit.CircuitID }}
-                </td>
-                <td>
-                    {{ circuit.CircuitName }}
-                </td>
-                <td>
-                    {{ circuit.Country }}
-                </td>
-                <td>
-                    {{ circuit.Date }}
-                </td>
-                <td>
-                    {{ circuit.CircuitComment }}
-                </td>
+                <td>{{ circuit.CircuitID }}</td>
+                <td>{{ circuit.CircuitName }}</td>
+                <td>{{ circuit.Country }}</td>
+                <td>{{ circuit.Date }}</td>
+                <td>{{ circuit.CircuitComment }}</td>
             </tr>
             {% endfor %}
         </tbody>

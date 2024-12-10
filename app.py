@@ -56,6 +56,22 @@ def driver_details(driver_no):
     conn.close()
     return render_template('driver_details.html', driver=driver, results=results)
 
+@app.route('/team/<string:team_name>')
+def team_details(team_name):
+    conn = get_db_connection()
+    team = conn.execute('SELECT * FROM Team WHERE TeamName = ?', (team_name,)).fetchone()
+    drivers = conn.execute('SELECT * FROM Driver WHERE TeamID = ?', (team_name,)).fetchall()
+    results = conn.execute('''
+        SELECT r.*, c.CircuitName, d.DriverName
+        FROM Results r, Circuit c, Driver d
+        WHERE r.CircuitID = c.CircuitID
+            AND r.DriverNo = d.DriverNo
+            AND r.TeamName = ?
+        ORDER BY c.Date;
+    ''', (team_name,)).fetchall()
+    conn.close()
+    return render_template('team_details.html', team=team, drivers=drivers, results=results)
+
 if __name__ == '__main__':
     app.debug = True
     app.run(host='127.0.0.1', port=5000)

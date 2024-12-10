@@ -34,8 +34,12 @@
                     <tr>
                         <td>{{ loop.index }}</td>
                         <td>{{ driver.DriverNo }}</td>
-                        <td>{{ driver.DriverName }}</td>
-                        <td>{{ driver.TeamID }}</td>
+                        <td>
+                            <a href="{{ url_for('driver_details', driver_no=driver.DriverNo) }}">{{ driver.DriverName }}</a>
+                        </td>
+                        <td>
+                            <a href="{{ url_for('team_details', team_name=driver.TeamID) }}">{{ driver.TeamID }}</a>
+                        </td>
                         <td>{{ driver.DriverPts }}</td>
                     </tr>
                     {% endfor %}
@@ -57,7 +61,9 @@
                     {% for team in teams %}
                     <tr>
                         <td>{{ loop.index }}</td>
-                        <td>{{ team.TeamName }}</td>
+                        <td>
+                            <a href="{{ url_for('team_details', team_name=team.TeamName) }}">{{ team.TeamName }}</a>
+                        </td>
                         <td>{{ team.TeamPts }}</td>
                     </tr>
                     {% endfor %}

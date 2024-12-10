@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ driver.DriverName }} - F1 드라이버 상세 정보</title>
+    <title>{{ team.TeamName }} - F1 팀 상세 정보</title>
 </head>
 <body>
     <div class="nav">
@@ -15,13 +15,22 @@
         </div>
     </div>
 
-    <div class="driver-header">
-        <span class="driver-number">#{{ driver.DriverNo }}</span>
-        <div class="driver-info">
-            <h1>{{ driver.DriverName }}</h1>
-            <p class="driver-team">소속팀: <a href="{{ url_for('team_details', team_name=driver.TeamID) }}">{{ driver.TeamID }}</a></p>
-            <p class="driver-points">현재 포인트: {{ driver.DriverPts }}</p>
+    <div class="team-header">
+        <div class="team-info">
+            <h1>{{ team.TeamName }}</h1>
+            <p class="team-points">컨스트럭터 포인트: {{ team.TeamPts }}</p>
         </div>
+    </div>
+
+    <div class="drivers-section">
+        <h2>소속 드라이버</h2>
+        {% for driver in drivers %}
+        <div class="driver-card">
+            <span class="driver-number">#{{ driver.DriverNo }}</span>
+            <a href="{{ url_for('driver_details', driver_no=driver.DriverNo) }}" class="driver-name">{{ driver.DriverName }}</a>
+            <span class="driver-points">{{ driver.DriverPts }} 포인트</span>
+        </div>
+        {% endfor %}
     </div>
 
     <h2>2024 시즌 경기 결과</h2>
@@ -29,6 +38,7 @@
         <thead>
             <tr>
                 <th>그랑프리</th>
+                <th>드라이버</th>
                 <th>순위</th>
                 <th>포인트</th>
                 <th>기록</th>
@@ -36,8 +46,11 @@
         </thead>
         <tbody>
             {% for result in results %}
-            <tr class="podium-{{ result.Position if result.Position <= 3 else '' }}">
+            <tr class="{% if result.Position <= 3 %}podium podium-{{ result.Position }}{% endif %}">
                 <td>{{ result.CircuitName }}</td>
+                <td>
+                    <a href="{{ url_for('driver_details', driver_no=result.DriverNo) }}">{{ result.DriverName }}</a>
+                </td>
                 <td>P{{ result.Position }}</td>
                 <td>{{ result.Pts }}</td>
                 <td>{{ result.Time }}</td>
@@ -47,7 +60,7 @@
     </table>
 
     <div style="margin-top: 20px; text-align: center;">
-        <p>총 {{ results|length }}개의 그랑프리에 참가</p>
+        <p>총 {{ results|length }}개의 결과</p>
         {% set podiums = results|selectattr('Position', '<=', 3)|list %}
         {% if podiums %}
         <p>시즌 포디움 횟수: {{ podiums|length }}회</p>
