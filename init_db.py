@@ -2,7 +2,7 @@ import pandas as pd
 import sqlite3
 
 # 엑셀 파일 로드
-file_path = 'F1_Data_10.xlsx' # 코드와 동일경로
+file_path = 'F1_Data_10.xlsx'
 excel_data = pd.ExcelFile(file_path)
 
 conn = sqlite3.connect('F1_2024.db')
@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS Driver (
     FOREIGN KEY (TeamID) REFERENCES Team (TeamName)
 )
 ''')
+
 # 팀 테이블
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS Team (
@@ -27,6 +28,7 @@ CREATE TABLE IF NOT EXISTS Team (
     TeamComment TEXT
 )
 ''')
+
 # 결과 테이블
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS Results (
@@ -43,6 +45,7 @@ CREATE TABLE IF NOT EXISTS Results (
     FOREIGN KEY (CircuitID) REFERENCES Circuit (CircuitID)
 )
 ''')
+
 # 서킷 테이블
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS Circuit (

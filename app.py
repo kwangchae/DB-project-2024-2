@@ -179,9 +179,11 @@ def show_results(circuit_id):
     conn.close()
     return render_template('results.html', results=results)
 
-# 경기 결과 추가
+# 경기 기록 추가
 @app.route('/result_add/', methods=['GET', 'POST'])
 def add_result():
+    conn = get_db_connection()
+    
     if request.method == 'POST':
         driver_no = request.form['driver_no']
         circuit_id = request.form['circuit_id']
@@ -196,7 +198,6 @@ def add_result():
         time = f"{hours:02}:{minutes:02}:{seconds:06.3f}"
 
         # DriverNo를 통해 TeamName을 가져옴
-        conn = get_db_connection()
         team_name = conn.execute('SELECT TeamID FROM Driver WHERE DriverNo = ?', (driver_no,)).fetchone()['teamID']
         
         # 결과 데이터 삽입
@@ -209,12 +210,23 @@ def add_result():
         return redirect(url_for('show_results', circuit_id=circuit_id))
 
     # 드라이버와 서킷 리스트를 불러와 선택 가능하도록 제공
-    conn = get_db_connection()
     drivers = conn.execute('SELECT * FROM Driver').fetchall()
     circuits = conn.execute('SELECT * FROM Circuit').fetchall()
     conn.close()
 
     return render_template('result_add.html', drivers=drivers, circuits=circuits)
+
+# 경기 기록 삭제
+@app.route('/delete_result/<int:result_id>', methods=['POST'])
+def delete_result(result_id):
+    conn = get_db_connection()
+
+    # CircuitID를 가져와 삭제 후 해당 서킷 결과 페이지로 리다이렉트
+    circuit_id = conn.execute('SELECT CircuitID FROM Results WHERE ResultsID = ?', (result_id,)).fetchone()['CircuitID']
+    conn.execute('DELETE FROM Results WHERE ResultsID = ?', (result_id,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('show_results', circuit_id=circuit_id))
 
 # 코멘트 추가/수정
 @app.route('/edit_results_comment/<int:result_ID>', methods=['POST'])
@@ -239,7 +251,6 @@ def delete_result_comment(result_ID):
     conn.commit()
     conn.close()
     return redirect(url_for('show_results', circuit_id=circuit_id))
-
 
 if __name__ == '__main__':
     app.debug = True

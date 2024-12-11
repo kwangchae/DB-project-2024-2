@@ -27,8 +27,9 @@
                 <th class="t100">팀</th>
                 <th class="t50">포인트</th>
                 <th class="t100">기록</th>
-                <th class="t250">경기코멘트</th>
-                <th class="t120">코멘트수정</th>
+                <th class="t250">경기 코멘트</th>
+                <th class="t120">코멘트 수정</th>
+                <th class="t120">기록 삭제</th>
             </tr>
         </thead>
         <tbody>
@@ -67,6 +68,11 @@
                             </div>
                         </form>
                     {% endif %}
+                </td>
+                <td>
+                    <form action="{{ url_for('delete_result', result_id=result.ResultsID) }}" method="POST">
+                        <button type="submit">삭제</button>
+                    </form>
                 </td>
             </tr>
             {% endfor %}
