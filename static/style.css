@@ -43,12 +43,12 @@ table {
 th, td {
     padding: 10px;
     border: 1px solid #ddd;
-    text-align: center;
+    text-align: left;
 }
 
 th {
     background-color: #f4f4f4;
-    text-align: center;
+    text-align: left;
 }
 
 tr:nth-child(even) {
@@ -106,7 +106,6 @@ a:hover {
     font-size: 16px;
     font-weight: bold;
     padding: 8px 15px;
-    background-color: #fff;
     border-radius: 4px;
 }
 
@@ -117,15 +116,9 @@ a:hover {
     border-radius: 4px;
 }
 
-.driver-info,
-.team-info,
-.driver-comment {
-    text-align:left;
-}
-
 /* 드라이버 상세 pg */
 .driver-number2 {
-    font-size: 30px;
+    font-size: 24px;
     font-weight: bold;
     padding: 8px 15px;
     background-color: #fff;
@@ -136,7 +129,7 @@ a:hover {
 .driver-points {
     font-weight: bold;
     font-size: 20px;
-    line-height: 1.2;
+    line-height: 1.5;
 }
 
 /* 기본 색 */
@@ -157,25 +150,8 @@ a:hover {
     background-color: #cd7f32 !important;
 }
 
-/* 팀 pg */
-.team-comment{
-    text-align:left;
-}
-
 /* 팀 상세 */
 .team-points {
     font-size : 20px;
     font-weight: bold;
-}
-
-/* 서킷 pg */
-.circuit-comment {
-    text-align:left;
-}
-
-/* 경기 결과 pg */
-.race-comment,
-.driver-name,
-.team-name{
-    text-align:left;
 }

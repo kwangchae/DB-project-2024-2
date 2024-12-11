@@ -27,9 +27,8 @@
         <h2>소속 드라이버</h2>
         {% for driver in drivers %}
         <div class="driver-card">
-            <span class="driver-number">#{{ driver.DriverNo }}</span>
-            <a class="driver-name" href="{{ url_for('driver_details', driver_no=driver.DriverNo) }}">{{ driver.DriverName }}</a>
-            <span class="driver-points">{{ driver.DriverPts }} 포인트</span>
+            <span class="driver-number2">#{{ driver.DriverNo }} {{ driver.DriverName }}</span>
+            <span class="driver-points"> {{ driver.DriverPts }} 포인트</span>
         </div>
         {% endfor %}
     </div>

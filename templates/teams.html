@@ -40,7 +40,7 @@
                     <a href="{{ url_for('team_details', team_name=team.TeamName) }}" class="team-name">{{ team.TeamName }}</a>
                 </td>
                 <td>{{ team.TeamPts }}</td>
-                <td class="team-comment">{{ team.TeamComment }}</td>
+                <td>{{ team.TeamComment }}</td>
             </tr>
             {% endfor %}
         </tbody>

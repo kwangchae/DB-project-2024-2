@@ -37,10 +37,10 @@
             {% for circuit in circuits %}
             <tr>
                 <td>{{ circuit.CircuitID }}</td>
-                <td>
+                <td class="circuit-name">
                     <a href="{{ url_for('show_results', circuit_id=circuit.CircuitID) }}">{{ circuit.CircuitName }}</a>
                 </td>
-                <td>{{ circuit.Country }}</td>
+                <td class="circuit-country">{{ circuit.Country }}</td>
                 <td>{{ circuit.Date }}</td>
                 <td class="circuit-comment">{{ circuit.CircuitComment }}</td>
             </tr>
