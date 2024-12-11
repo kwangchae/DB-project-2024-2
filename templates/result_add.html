@@ -35,7 +35,7 @@
             
             <div class="form-group">
                 <label for="pts">포인트:</label>
-                <input type="number" id="pts" name="pts" class="form-control" placeholder = "0 ~ 34" min="0" max="34" required>
+                <input type="number" id="pts" name="pts" class="form-control" placeholder="0 ~ 34" min="0" max="34" required>
             </div>
             
             <div class="form-group">
@@ -48,7 +48,7 @@
             </div>
             
             <div class="form-group button-group">
-            <button type="submit" class="btn btn-primary">기록 추가하기</button>
+                <button type="submit" class="btn btn-primary">기록 추가하기</button>
             </div>
 
             <div class="form-group button-group">
@@ -56,5 +56,13 @@
             </div>
         </form>
     </div>
+    <div data-warning="{{ 'true' if warning else 'false' }}"></div>
+    <script>
+        const warning = document.querySelector('[data-warning]').dataset.warning === 'true';
+        
+        if (warning) {
+            alert('해당 서킷의 드라이버 기록이 존재합니다.');
+        }
+    </script>
 </body>
 </html>

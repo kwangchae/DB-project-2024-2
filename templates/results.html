@@ -29,7 +29,7 @@
                 <th class="t100">기록</th>
                 <th class="t250">경기 코멘트</th>
                 <th class="t120">코멘트 수정</th>
-                <th class="t120">기록 삭제</th>
+                <th class="t100">기록 삭제</th>
             </tr>
         </thead>
         <tbody>
@@ -70,10 +70,10 @@
                     {% endif %}
                 </td>
                 <td>
-                    <form action="{{ url_for('delete_result', result_id=result.ResultsID) }}" method="POST">
+                    <form action="{{ url_for('delete_result', result_id=result.ResultsID) }}" method="POST" onsubmit="return confirmDeletion();">
                         <button type="submit">삭제</button>
                     </form>
-                </td>
+                </td>                               
             </tr>
             {% endfor %}
         </tbody>
@@ -98,23 +98,24 @@
             input.style.display = input.style.display === 'none' ? 'block' : 'none';
             buttonContainer.style.display = buttonContainer.style.display === 'none' ? 'flex' : 'none';
             
-            // 추가 클릭 시 버튼 숨기기
             if (button.classList.contains('add-button')) {
                 if (addButton) addButton.style.display = 'none';
             }
-
-            // 취소 클릭 시 다시 버튼 표시
+    
             if (button.classList.contains('cancel-button')) {
                 if (addButton) addButton.style.display = 'inline-block';
                 if (editButton) editButton.style.display = 'inline-block';
                 if (deleteButton) deleteButton.style.display = 'inline-block';
             }
-            // 수정 클릭 시 삭제버튼 숨기기
             if (button.classList.contains('edit-button')) {
                 editButton.style.display = 'none';
                 deleteButton.style.display = 'none';
             }
         }
-    </script>
+    
+        function confirmDeletion() {
+            return confirm("정말로 기록을 삭제하시겠습니까?");
+        }
+    </script>    
 </body>
 </html>

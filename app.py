@@ -183,38 +183,43 @@ def show_results(circuit_id):
 @app.route('/result_add/', methods=['GET', 'POST'])
 def add_result():
     conn = get_db_connection()
+
+    # 드라이버와 서킷 데이터를 미리 가져옵니다.
+    drivers = conn.execute('SELECT * FROM Driver').fetchall()
+    circuits = conn.execute('SELECT * FROM Circuit').fetchall()
     
     if request.method == 'POST':
         driver_no = request.form['driver_no']
         circuit_id = request.form['circuit_id']
-        position = request.form['position']
-        pts = request.form['pts']
-        
-        # 시간 입력을 받아서 hh:mm:SS.sss 형태로 변환
+
+        # DB에서 드라이버 기록 존재 여부 확인
+        existing_record = conn.execute('SELECT * FROM Results WHERE DriverNo = ? AND CircuitID = ?', (driver_no, circuit_id)).fetchone()
+
+        if existing_record:
+            # 이미 기록이 존재하는 경우 경고 전달
+            conn.close()
+            return render_template('result_add.html', drivers=drivers, circuits=circuits, warning=True)
+
+        # 새로운 기록 추가
+        position = int(request.form['position'])
+        pts = int(request.form['pts'])
         hours = int(request.form['hours'])
         minutes = int(request.form['minutes'])
         seconds = float(request.form['seconds'])
+        race_time = f"{hours:02}:{minutes:02}:{seconds:06.3f}"
+        team_name = conn.execute('SELECT TeamID FROM Driver WHERE DriverNo = ?', (driver_no,)).fetchone()[0]
         
-        time = f"{hours:02}:{minutes:02}:{seconds:06.3f}"
-
-        # DriverNo를 통해 TeamName을 가져옴
-        team_name = conn.execute('SELECT TeamID FROM Driver WHERE DriverNo = ?', (driver_no,)).fetchone()['teamID']
-        
-        # 결과 데이터 삽입
         conn.execute('''
-            INSERT INTO Results (DriverNo, TeamName, CircuitID, Position, Pts, Time)
+            INSERT INTO Results (DriverNo, CircuitID, Position, Pts, Time, TeamName)
             VALUES (?, ?, ?, ?, ?, ?)
-        ''', (driver_no, team_name, circuit_id, position, pts, time))
+        ''', (driver_no, circuit_id, position, pts, race_time, team_name))
         conn.commit()
         conn.close()
         return redirect(url_for('show_results', circuit_id=circuit_id))
 
-    # 드라이버와 서킷 리스트를 불러와 선택 가능하도록 제공
-    drivers = conn.execute('SELECT * FROM Driver').fetchall()
-    circuits = conn.execute('SELECT * FROM Circuit').fetchall()
+    # GET 요청일 경우
     conn.close()
-
-    return render_template('result_add.html', drivers=drivers, circuits=circuits)
+    return render_template('result_add.html', drivers=drivers, circuits=circuits, warning=False)
 
 # 경기 기록 삭제
 @app.route('/delete_result/<int:result_id>', methods=['POST'])
