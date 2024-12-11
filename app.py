@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 
 app = Flask(__name__)
@@ -48,6 +48,26 @@ def driver_details(driver_no):
     ''', (driver_no,)).fetchall()
     conn.close()
     return render_template('driver_details.html', driver=driver, results=results)
+
+# 코멘트 추가/수정
+@app.route('/edit_comment/<int:driver_no>', methods=['POST'])
+def edit_comment(driver_no):
+    new_comment = request.form['new_comment']
+    conn = get_db_connection()
+    conn.execute('UPDATE Driver SET DriverComment = ? WHERE DriverNo = ?', (new_comment, driver_no))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('show_drivers'))
+
+# 코멘트 삭제 (''로 업데이트)
+@app.route('/delete_comment/<int:driver_no>', methods=['POST'])
+def delete_comment(driver_no):
+    conn = get_db_connection()
+    conn.execute('UPDATE Driver SET DriverComment = ? WHERE DriverNo = ?', ('', driver_no))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('show_drivers'))
+
 
 # 팀 목록 
 @app.route('/teams/')
