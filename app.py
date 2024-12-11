@@ -54,6 +54,15 @@ def driver_details(driver_no):
 def show_teams():
     conn = get_db_connection()
     teams = conn.execute('SELECT * FROM Team ORDER BY TeamPts DESC').fetchall()
+    search_query = request.args.get('search', '').strip()
+    
+    if search_query:
+        teams = conn.execute('''
+            SELECT * FROM Team WHERE TeamName LIKE ? ORDER BY TeamPts DESC
+        ''', (f'{search_query}%',)).fetchall()
+    else:
+        teams = conn.execute('SELECT * FROM Team ORDER BY TeamPts DESC').fetchall()
+    
     conn.close()
     return render_template('teams.html', teams=teams)
 
