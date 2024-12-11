@@ -2,7 +2,7 @@ import pandas as pd
 import sqlite3
 
 # 엑셀 파일 로드
-file_path = 'F1_Data_9.xlsx' # 코드와 동일경로
+file_path = 'F1_Data_10.xlsx' # 코드와 동일경로
 excel_data = pd.ExcelFile(file_path)
 
 conn = sqlite3.connect('F1_2024.db')
