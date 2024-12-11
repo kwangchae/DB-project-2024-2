@@ -137,6 +137,25 @@ def show_circuits():
     conn.close()
     return render_template('circuits.html', circuits=circuits)
 
+# 코멘트 추가/수정
+@app.route('/edit_circuit_comment/<string:circuit_name>', methods=['POST'])
+def edit_circuit_comment(circuit_name):
+    new_comment = request.form.get('new_comment')
+    conn = get_db_connection()
+    conn.execute('UPDATE Circuit SET CircuitComment = ? WHERE CircuitName = ?', (new_comment, circuit_name))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('show_circuits'))
+
+# 코멘트 초기화
+@app.route('/delete_circuit_comment/<string:circuit_name>', methods=['POST'])
+def delete_circuit_comment(circuit_name):
+    conn = get_db_connection()
+    conn.execute('UPDATE Circuit SET CircuitComment = ? WHERE CircuitName = ?', ('', circuit_name))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('show_circuits'))
+
 # 경기기록
 @app.route('/results/<int:circuit_id>')
 def show_results(circuit_id):
