@@ -59,7 +59,7 @@ def edit_comment(driver_no):
     conn.close()
     return redirect(url_for('show_drivers'))
 
-# 코멘트 삭제 (''로 업데이트)
+# 코멘트 초기화 (''로 업데이트)
 @app.route('/delete_comment/<int:driver_no>', methods=['POST'])
 def delete_comment(driver_no):
     conn = get_db_connection()
@@ -82,7 +82,6 @@ def show_teams():
         ''', (f'{search_query}%',)).fetchall()
     else:
         teams = conn.execute('SELECT * FROM Team ORDER BY TeamPts DESC').fetchall()
-    
     conn.close()
     return render_template('teams.html', teams=teams)
 
@@ -102,6 +101,24 @@ def team_details(team_name):
     ''', (team_name,)).fetchall()
     conn.close()
     return render_template('team_details.html', team=team, drivers=drivers, results=results)
+
+# 코멘트 추가/수정
+@app.route('/edit_team_comment/<string:team_name>', methods=['POST'])
+def edit_team_comment(team_name):
+    new_comment = request.form.get('new_comment')
+    conn = get_db_connection()
+    conn.execute('UPDATE Team SET TeamComment = ? WHERE TeamName = ?', (new_comment, team_name))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('show_teams'))
+# 코멘트 초기화
+@app.route('/delete_team_comment/<string:team_name>', methods=['POST'])
+def delete_team_comment(team_name):
+    conn = get_db_connection()
+    conn.execute('UPDATE Team SET TeamComment = ? WHERE TeamName = ?', ('', team_name))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('show_teams'))
 
 # 서킷 목록
 @app.route('/circuits/')
