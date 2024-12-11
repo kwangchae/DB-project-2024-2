@@ -114,7 +114,6 @@ a:hover {
     font-size: 16px;
     font-weight: bold;
     padding: 8px 15px;
-    background-color: #fff;
     border-radius: 4px;
 }
 
@@ -156,4 +155,9 @@ a:hover {
 
 .podium-3 {
     background-color: #cd7f32 !important;
+}
+
+/* 팀 pg */
+.team-comment{
+    text-align:left;
 }

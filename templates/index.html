@@ -34,7 +34,7 @@
                     {% for driver in drivers %}
                     <tr>
                         <td>{{ loop.index }}</td>
-                        <td>{{ driver.DriverNo }}</td>
+                        <td class="driver-number"> #{{ driver.DriverNo }}</td>
                         <td>
                             <a href="{{ url_for('driver_details', driver_no=driver.DriverNo) }}">{{ driver.DriverName }}</a>
                         </td>
