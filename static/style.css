@@ -123,3 +123,37 @@ a:hover {
 .driver-comment {
     text-align:left;
 }
+
+/* 드라이버 상세 pg */
+.driver-number2 {
+    font-size: 30px;
+    font-weight: bold;
+    padding: 8px 15px;
+    background-color: #fff;
+    border-radius: 4px;
+}
+
+.driver-team,
+.driver-points {
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 1.2;
+}
+
+/* 기본 색 */
+.podium {
+    background-color: #fff3cd;
+}
+
+/* 수상 시 */
+.podium-1 {
+    background-color: #ffd700 !important;
+}
+
+.podium-2 {
+    background-color: #c0c0c0 !important;
+}
+
+.podium-3 {
+    background-color: #cd7f32 !important;
+}
