@@ -21,17 +21,19 @@
     <table>
         <thead>
             <tr>
-                <th>순위</th>
-                <th>드라이버</th>
-                <th>팀</th>
-                <th>포인트</th>
-                <th>기록</th>
-                <th>경기코멘트</th>
+                <th class="t30">순위</th>
+                <th class="t100">드라이버</th>
+                <th class="t100">팀</th>
+                <th class="t50">포인트</th>
+                <th class="t100">기록</th>
+                <th class="t250">경기코멘트</th>
+                <th class="t120">코멘트수정</th>
             </tr>
         </thead>
         <tbody>
             {% for result in results %}
-            <td> {{ 'DSQ' if result.position == 40 else 'DNF' if result.position == 30 else 'P' + result.position|string }} </td>
+            <tr>
+                <td>{{ 'DSQ' if result.Position == 40 else 'DNF' if result.Position == 30 else 'P' + result.Position|string }}</td>
                 <td class="driver-name">
                     <a href="{{ url_for('driver_details', driver_no=result.DriverNo) }}">{{ result.DriverName }}</a>
                 </td>
@@ -39,9 +41,32 @@
                     <a href="{{ url_for('team_details', team_name=result.TeamName) }}">{{ result.TeamName }}</a>
                 </td>
                 <td>{{ result.Pts }}</td>
-                <td>{{ result.Time }}</td>
-                <td>{{ result.RaceComment }}</td>
-                
+                <td>{{ 'Retire' if result.Time == 'DNF' else 'Non-Start' if result.Time == 'DNS' else 'Exclusion' if result.Time == 'DSQ' else result.Time }}</td>
+                <td>{{ result.RaceComment if result.RaceComment is not none else ''}}</td>
+                <td>
+                    {% if result.RaceComment is not none %}
+                        <form action="{{ url_for('edit_result_comment', result_ID=result.ResultsID) }}" method="POST" class="comment-form" style="display: inline;">
+                            <input type="text" name="new_comment" placeholder="새 코멘트 입력" value="{{ result.RaceComment }}" style="display: none; width: 100px;" class="comment-input">
+                            <button type="button" class="edit-button" onclick="toggleInput(this)">수정</button>
+                            <div class="button-container" style="display: none;">
+                                <button type="submit" class="submit-button">확인</button>
+                                <button type="button" class="cancel-button" onclick="toggleInput(this)">취소</button>
+                            </div>
+                        </form>
+                        <form action="{{ url_for('delete_result_comment', result_ID=result.ResultsID) }}" method="POST" style="display: inline;">
+                            <button type="submit" class="delete-button">삭제</button>
+                        </form>
+                    {% else %}
+                        <form action="{{ url_for('edit_result_comment', result_ID=result.ResultsID) }}" method="POST" class="comment-form" style="display: inline;">
+                            <input type="text" name="new_comment" placeholder="새 코멘트 입력" style="display: none; width: 100px;" class="comment-input">
+                            <button type="button" class="add-button" onclick="toggleInput(this)">추가</button>
+                            <div class="button-container" style="display: none;">
+                                <button type="submit" class="submit-button">확인</button>
+                                <button type="button" class="cancel-button" onclick="toggleInput(this)">취소</button>
+                            </div>
+                        </form>
+                    {% endif %}
+                </td>
             </tr>
             {% endfor %}
         </tbody>
@@ -53,5 +78,36 @@
         <p>우승: <strong>{{ results[0].DriverName }}</strong> ({{ results[0].TeamName }})</p>
         {% endif %}
     </div>
+    <script>
+        function toggleInput(button) {
+            const form = button.closest('.comment-form');
+            const input = form.querySelector('.comment-input');
+            const submitButton = form.querySelector('.submit-button');
+            const buttonContainer = form.querySelector('.button-container');
+            const addButton = form.querySelector('.add-button');
+            const editButton = form.querySelector('.edit-button');
+            const deleteButton = form.closest('td').querySelector('.delete-button');
+        
+            input.style.display = input.style.display === 'none' ? 'block' : 'none';
+            buttonContainer.style.display = buttonContainer.style.display === 'none' ? 'flex' : 'none';
+            
+            // 추가 클릭 시 버튼 숨기기
+            if (button.classList.contains('add-button')) {
+                if (addButton) addButton.style.display = 'none';
+            }
+
+            // 취소 클릭 시 다시 버튼 표시
+            if (button.classList.contains('cancel-button')) {
+                if (addButton) addButton.style.display = 'inline-block';
+                if (editButton) editButton.style.display = 'inline-block';
+                if (deleteButton) deleteButton.style.display = 'inline-block';
+            }
+            // 수정 클릭 시 삭제버튼 숨기기
+            if (button.classList.contains('edit-button')) {
+                editButton.style.display = 'none';
+                deleteButton.style.display = 'none';
+            }
+        }
+    </script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 
 app = Flask(__name__)
@@ -18,7 +18,7 @@ def index():
     conn.close()
     return render_template('index.html', drivers=drivers, teams=teams)
 
-# 드라이버 페이지 라우팅
+########## 드라이버 페이지 ##########
 @app.route('/drivers/')
 def show_drivers():
     conn = get_db_connection()
@@ -49,7 +49,27 @@ def driver_details(driver_no):
     conn.close()
     return render_template('driver_details.html', driver=driver, results=results)
 
-# 팀 목록 
+# 코멘트 추가/수정
+@app.route('/edit_comment/<int:driver_no>', methods=['POST'])
+def edit_comment(driver_no):
+    new_comment = request.form['new_comment']
+    conn = get_db_connection()
+    conn.execute('UPDATE Driver SET DriverComment = ? WHERE DriverNo = ?', (new_comment, driver_no))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('show_drivers'))
+
+# 코멘트 초기화 (''로 업데이트)
+@app.route('/delete_comment/<int:driver_no>', methods=['POST'])
+def delete_comment(driver_no):
+    conn = get_db_connection()
+    conn.execute('UPDATE Driver SET DriverComment = ? WHERE DriverNo = ?', ('', driver_no))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('show_drivers'))
+
+
+########## 팀 페이지 ##########
 @app.route('/teams/')
 def show_teams():
     conn = get_db_connection()
@@ -62,7 +82,6 @@ def show_teams():
         ''', (f'{search_query}%',)).fetchall()
     else:
         teams = conn.execute('SELECT * FROM Team ORDER BY TeamPts DESC').fetchall()
-    
     conn.close()
     return render_template('teams.html', teams=teams)
 
@@ -83,7 +102,25 @@ def team_details(team_name):
     conn.close()
     return render_template('team_details.html', team=team, drivers=drivers, results=results)
 
-# 서킷 목록
+# 코멘트 추가/수정
+@app.route('/edit_team_comment/<string:team_name>', methods=['POST'])
+def edit_team_comment(team_name):
+    new_comment = request.form.get('new_comment')
+    conn = get_db_connection()
+    conn.execute('UPDATE Team SET TeamComment = ? WHERE TeamName = ?', (new_comment, team_name))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('show_teams'))
+# 코멘트 초기화
+@app.route('/delete_team_comment/<string:team_name>', methods=['POST'])
+def delete_team_comment(team_name):
+    conn = get_db_connection()
+    conn.execute('UPDATE Team SET TeamComment = ? WHERE TeamName = ?', ('', team_name))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('show_teams'))
+
+########## 서킷 페이지 ##########
 @app.route('/circuits/')
 def show_circuits():
     conn = get_db_connection()
@@ -100,7 +137,26 @@ def show_circuits():
     conn.close()
     return render_template('circuits.html', circuits=circuits)
 
-# 경기기록
+# 코멘트 추가/수정
+@app.route('/edit_circuit_comment/<string:circuit_name>', methods=['POST'])
+def edit_circuit_comment(circuit_name):
+    new_comment = request.form.get('new_comment')
+    conn = get_db_connection()
+    conn.execute('UPDATE Circuit SET CircuitComment = ? WHERE CircuitName = ?', (new_comment, circuit_name))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('show_circuits'))
+
+# 코멘트 초기화
+@app.route('/delete_circuit_comment/<string:circuit_name>', methods=['POST'])
+def delete_circuit_comment(circuit_name):
+    conn = get_db_connection()
+    conn.execute('UPDATE Circuit SET CircuitComment = ? WHERE CircuitName = ?', ('', circuit_name))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('show_circuits'))
+
+########## 경기기록 페이지 ##########
 @app.route('/results/<int:circuit_id>')
 def show_results(circuit_id):
     conn = get_db_connection()
@@ -114,6 +170,31 @@ def show_results(circuit_id):
     ''', (circuit_id,)).fetchall()
     conn.close()
     return render_template('results.html', results=results)
+
+# 코멘트 추가/수정
+@app.route('/edit_results_comment/<int:result_ID>', methods=['POST'])
+def edit_result_comment(result_ID):
+    new_comment = request.form.get('new_comment')
+    conn = get_db_connection()
+    conn.execute('UPDATE Results SET RaceComment = ? WHERE ResultsID = ?', (new_comment, result_ID))
+    
+    # result_ID를 포함하는 circuit_id탐색
+    circuit_id = conn.execute('SELECT CircuitID FROM Results WHERE ResultsID = ?', (result_ID,)).fetchone()[0]
+    conn.commit()
+    conn.close()    
+    # 해당 circuit_id로 새로고침
+    return redirect(url_for('show_results', circuit_id=circuit_id))
+
+# 코멘트 초기화
+@app.route('/delete_results_comment/<int:result_ID>', methods=['POST'])
+def delete_result_comment(result_ID):
+    conn = get_db_connection()
+    conn.execute('UPDATE Results SET RaceComment = ? WHERE ResultsID = ?', ('', result_ID))
+    circuit_id = conn.execute('SELECT CircuitID FROM Results WHERE ResultsID = ?', (result_ID,)).fetchone()[0]
+    conn.commit()
+    conn.close()
+    return redirect(url_for('show_results', circuit_id=circuit_id))
+
 
 if __name__ == '__main__':
     app.debug = True
