@@ -41,7 +41,7 @@
                     <a href="{{ url_for('team_details', team_name=result.TeamName) }}">{{ result.TeamName }}</a>
                 </td>
                 <td>{{ result.Pts }}</td>
-                <td>{{ result.Time }}</td>
+                <td>{{ 'Retire' if result.Time == 'DNF' else 'Non-Start' if result.Time == 'DNS' else 'Exclusion' if result.Time == 'DSQ' else result.Time }}</td>
                 <td>{{ result.RaceComment if result.RaceComment is not none else ''}}</td>
                 <td>
                     {% if result.RaceComment is not none %}
