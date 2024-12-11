@@ -1,0 +1,76 @@
+/* 기본 레이아웃 */
+body {
+    font-family: Arial, sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* 네비게이션 */
+.nav {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.nav a {
+    margin-right: 15px;
+    text-decoration: none;
+    color: #333;
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+}
+
+/* 제목 스타일 */
+h1, h2 {
+    color: #333;
+    text-align: center;
+}
+
+/* 테이블 스타일 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+
+/* 링크 스타일 */
+a {
+    text-decoration: none;
+    color: #0066cc;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* 컨테이너 레이아웃 */
+.container {
+    display: flex;
+    gap: 40px;
+}
+
+.section {
+    flex: 1;
+}
