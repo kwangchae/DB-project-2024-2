@@ -18,7 +18,7 @@ def index():
     conn.close()
     return render_template('index.html', drivers=drivers, teams=teams)
 
-# 드라이버 페이지 라우팅
+########## 드라이버 페이지 ##########
 @app.route('/drivers/')
 def show_drivers():
     conn = get_db_connection()
@@ -69,7 +69,7 @@ def delete_comment(driver_no):
     return redirect(url_for('show_drivers'))
 
 
-# 팀 목록 
+########## 팀 페이지 ##########
 @app.route('/teams/')
 def show_teams():
     conn = get_db_connection()
@@ -120,7 +120,7 @@ def delete_team_comment(team_name):
     conn.close()
     return redirect(url_for('show_teams'))
 
-# 서킷 목록
+########## 서킷 페이지 ##########
 @app.route('/circuits/')
 def show_circuits():
     conn = get_db_connection()
@@ -156,7 +156,7 @@ def delete_circuit_comment(circuit_name):
     conn.close()
     return redirect(url_for('show_circuits'))
 
-# 경기기록
+########## 경기기록 페이지 ##########
 @app.route('/results/<int:circuit_id>')
 def show_results(circuit_id):
     conn = get_db_connection()
@@ -170,6 +170,31 @@ def show_results(circuit_id):
     ''', (circuit_id,)).fetchall()
     conn.close()
     return render_template('results.html', results=results)
+
+# 코멘트 추가/수정
+@app.route('/edit_results_comment/<int:result_ID>', methods=['POST'])
+def edit_result_comment(result_ID):
+    new_comment = request.form.get('new_comment')
+    conn = get_db_connection()
+    conn.execute('UPDATE Results SET RaceComment = ? WHERE ResultsID = ?', (new_comment, result_ID))
+    
+    # result_ID를 포함하는 circuit_id탐색
+    circuit_id = conn.execute('SELECT CircuitID FROM Results WHERE ResultsID = ?', (result_ID,)).fetchone()[0]
+    conn.commit()
+    conn.close()    
+    # 해당 circuit_id로 새로고침
+    return redirect(url_for('show_results', circuit_id=circuit_id))
+
+# 코멘트 초기화
+@app.route('/delete_results_comment/<int:result_ID>', methods=['POST'])
+def delete_result_comment(result_ID):
+    conn = get_db_connection()
+    conn.execute('UPDATE Results SET RaceComment = ? WHERE ResultsID = ?', ('', result_ID))
+    circuit_id = conn.execute('SELECT CircuitID FROM Results WHERE ResultsID = ?', (result_ID,)).fetchone()[0]
+    conn.commit()
+    conn.close()
+    return redirect(url_for('show_results', circuit_id=circuit_id))
+
 
 if __name__ == '__main__':
     app.debug = True
