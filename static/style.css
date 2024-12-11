@@ -34,7 +34,8 @@ h1, h2 {
 
 /* 테이블 */
 table {
-    width: 100%;
+    /* width: 100%; */
+    width : 1300px; 
     border-collapse: collapse;
     margin-top: 20px;
     margin-bottom: 20px;
@@ -102,7 +103,8 @@ a:hover {
 }
 
 /* 드라이버 pg */
-.rank {
+.rank,
+.Round-num {
     font-size: 16px;
     font-weight: bold;
     padding: 8px 15px;
@@ -154,4 +156,27 @@ a:hover {
 .team-points {
     font-size : 20px;
     font-weight: bold;
+}
+
+/* 테이블 칸 크기 */
+.t30 {
+    width: 30px;
+}
+.t50 {
+    width: 50px;
+}
+.t100 {
+    width: 100px;
+}
+.t120 {
+    width: 120px;
+}
+.t150 {
+    width: 150px;
+}
+/* .t200 {
+    width: 200px;
+} */
+.t250 {
+    width: 250px;
 }

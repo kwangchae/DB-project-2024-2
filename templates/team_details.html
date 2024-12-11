@@ -48,7 +48,7 @@
             {% for result in results %}
             <tr class="{% if result.Position <= 3 %}podium podium-{{ result.Position }}{% endif %}">
                 <td>
-                    <a href="{{ url_for('show_results', circuit_id=result.CircuitID) }}">{{ result.CircuitName }}</a>
+                    <a href="{{ url_for('show_results', circuit_id=result.CircuitID) }}">[R{{result.CircuitID}}] {{ result.CircuitName }}</a>
                 </td>
                 <td>
                     <a href="{{ url_for('driver_details', driver_no=result.DriverNo) }}">{{ result.DriverName }}</a>

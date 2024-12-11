@@ -38,7 +38,7 @@
         <tbody>
             {% for result in results %}
             <tr class="podium-{{ result.Position if result.Position <= 3 else '' }}">
-                <td><a href="{{ url_for('show_results', circuit_id=result.CircuitID) }}">{{ result.CircuitName}}</a></td>
+                <td><a href="{{ url_for('show_results', circuit_id=result.CircuitID) }}">[R{{result.CircuitID}}] {{ result.CircuitName}}</a></td>
                 <td> {{ 'DSQ' if result.position == 40 else 'DNF' if result.position == 30 else 'P' + result.position|string }} </td>
                 <td>{{ result.Pts }}</td>
                 <td>{{ result.Time }}</td>

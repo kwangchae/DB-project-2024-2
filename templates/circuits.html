@@ -26,18 +26,18 @@
     <table>
         <thead>
             <tr>
-                <th>라운드</th>
-                <th>서킷</th>
-                <th>국가</th>
-                <th>날짜</th>
-                <th>서킷 코멘트</th>
-                <th>코멘트 수정</th>
+                <th class="t30">라운드</th>
+                <th class="t120">서킷</th>
+                <th class="t100">국가</th>
+                <th class="t100">날짜</th>
+                <th class="t250">서킷 코멘트</th>
+                <th class="t120">코멘트 수정</th>
             </tr>
         </thead>
         <tbody>
             {% for circuit in circuits %}
             <tr>
-                <td>{{ circuit.CircuitID }}</td>
+                <td class="Round-num">{{ circuit.CircuitID }}</td>
                 <td class="circuit-name">
                     <a href="{{ url_for('show_results', circuit_id=circuit.CircuitID) }}">{{ circuit.CircuitName }}</a>
                 </td>
