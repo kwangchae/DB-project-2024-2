@@ -172,3 +172,10 @@ a:hover {
 .circuit-comment {
     text-align:left;
 }
+
+/* 경기 결과 pg */
+.race-comment,
+.driver-name,
+.team-name{
+    text-align:left;
+}
