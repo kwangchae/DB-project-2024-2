@@ -56,7 +56,7 @@
                 </td>
                 <td> {{ 'DSQ' if result.position == 40 else 'DNF' if result.position == 30 else 'P' + result.position|string }} </td>
                 <td>{{ result.Pts }}</td>
-                <td>{{ 'Retire' if result.Time == 'DNF' else 'Non-Start' if result.Time == 'DNS' else 'Exclusion' if result.Time == 'DSQ' else result.Time }}</td>
+                <td>{{ 'Retire' if result.Time == 'DNF' else 'Non-Start' if result.Time == 'DNS' else 'Exclusion' if result.Time == 'DSQ' else result.Time[:12] }}</td>
             </tr>
             {% endfor %}
         </tbody>
