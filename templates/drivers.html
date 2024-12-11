@@ -15,6 +15,12 @@
             <a href="/teams">팀 목록</a>
             <a href="/circuits">서킷 목록</a>
         </div>
+        <div class="search-box">
+            <form action="" method="GET">
+                <input type="text" name="search" placeholder="search driver.." value="{{ request.args.get('search', '') }}">
+                <button type="submit">검색</button>
+            </form>
+        </div>
     </div>
 
     <table>

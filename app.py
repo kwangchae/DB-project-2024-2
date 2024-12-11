@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import sqlite3
 
 app = Flask(__name__)
@@ -23,6 +23,14 @@ def index():
 def show_drivers():
     conn = get_db_connection()
     drivers = conn.execute('SELECT * FROM Driver ORDER BY DriverPts DESC').fetchall()
+    search_query = request.args.get('search', '').strip()
+    
+    if search_query:
+        drivers = conn.execute('''
+            SELECT * FROM Driver WHERE DriverName LIKE ? ORDER BY DriverPts DESC
+        ''', (f'{search_query}%',)).fetchall()
+    else:
+        drivers = conn.execute('SELECT * FROM Driver ORDER BY DriverPts DESC').fetchall()
     conn.close()
     return render_template('drivers.html', drivers=drivers)
 
