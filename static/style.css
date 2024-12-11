@@ -167,3 +167,8 @@ a:hover {
     font-size : 20px;
     font-weight: bold;
 }
+
+/* 서킷 pg */
+.circuit-comment {
+    text-align:left;
+}

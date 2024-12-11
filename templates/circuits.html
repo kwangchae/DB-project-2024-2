@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>F1 서킷 목록</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <h1>F1 그랑프리 일정</h1>
@@ -15,7 +16,7 @@
             <a href="/teams">팀 목록</a>
             <a href="/circuits">서킷 목록</a>
         </div>
-        <div class="search-container">
+        <div class="search-box">
             <form action="" method="GET">
                 <input type="text" name="search" placeholder="search team.." value="{{ request.args.get('search', '') }}">
                 <button type="submit">검색</button>
@@ -41,7 +42,7 @@
                 </td>
                 <td>{{ circuit.Country }}</td>
                 <td>{{ circuit.Date }}</td>
-                <td>{{ circuit.CircuitComment }}</td>
+                <td class="circuit-comment">{{ circuit.CircuitComment }}</td>
             </tr>
             {% endfor %}
         </tbody>
