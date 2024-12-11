@@ -9,7 +9,7 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
-# 메인 페이지 라우팅
+# 메인 페이지
 @app.route('/')
 def index():
     conn = get_db_connection()
@@ -18,7 +18,9 @@ def index():
     conn.close()
     return render_template('index.html', drivers=drivers, teams=teams)
 
-########## 드라이버 페이지 ##########
+##################
+# 드라이버 페이지 # 
+##################
 @app.route('/drivers/')
 def show_drivers():
     conn = get_db_connection()
@@ -69,7 +71,9 @@ def delete_comment(driver_no):
     return redirect(url_for('show_drivers'))
 
 
-########## 팀 페이지 ##########
+############
+# 팀 페이지 # 
+############
 @app.route('/teams/')
 def show_teams():
     conn = get_db_connection()
@@ -120,7 +124,9 @@ def delete_team_comment(team_name):
     conn.close()
     return redirect(url_for('show_teams'))
 
-########## 서킷 페이지 ##########
+##############
+# 서킷 페이지 #
+##############
 @app.route('/circuits/')
 def show_circuits():
     conn = get_db_connection()
@@ -156,7 +162,9 @@ def delete_circuit_comment(circuit_name):
     conn.close()
     return redirect(url_for('show_circuits'))
 
-########## 경기기록 페이지 ##########
+##################
+# 경기기록 페이지 # 
+##################
 @app.route('/results/<int:circuit_id>')
 def show_results(circuit_id):
     conn = get_db_connection()
@@ -170,6 +178,43 @@ def show_results(circuit_id):
     ''', (circuit_id,)).fetchall()
     conn.close()
     return render_template('results.html', results=results)
+
+# 경기 결과 추가
+@app.route('/result_add/', methods=['GET', 'POST'])
+def add_result():
+    if request.method == 'POST':
+        driver_no = request.form['driver_no']
+        circuit_id = request.form['circuit_id']
+        position = request.form['position']
+        pts = request.form['pts']
+        
+        # 시간 입력을 받아서 hh:mm:SS.sss 형태로 변환
+        hours = int(request.form['hours'])
+        minutes = int(request.form['minutes'])
+        seconds = float(request.form['seconds'])
+        
+        time = f"{hours:02}:{minutes:02}:{seconds:06.3f}"
+
+        # DriverNo를 통해 TeamName을 가져옴
+        conn = get_db_connection()
+        team_name = conn.execute('SELECT TeamID FROM Driver WHERE DriverNo = ?', (driver_no,)).fetchone()['teamID']
+        
+        # 결과 데이터 삽입
+        conn.execute('''
+            INSERT INTO Results (DriverNo, TeamName, CircuitID, Position, Pts, Time)
+            VALUES (?, ?, ?, ?, ?, ?)
+        ''', (driver_no, team_name, circuit_id, position, pts, time))
+        conn.commit()
+        conn.close()
+        return redirect(url_for('show_results', circuit_id=circuit_id))
+
+    # 드라이버와 서킷 리스트를 불러와 선택 가능하도록 제공
+    conn = get_db_connection()
+    drivers = conn.execute('SELECT * FROM Driver').fetchall()
+    circuits = conn.execute('SELECT * FROM Circuit').fetchall()
+    conn.close()
+
+    return render_template('result_add.html', drivers=drivers, circuits=circuits)
 
 # 코멘트 추가/수정
 @app.route('/edit_results_comment/<int:result_ID>', methods=['POST'])

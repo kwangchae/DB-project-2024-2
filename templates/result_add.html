@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>경기 기록 추가</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <form method="post" action="{{ url_for('add_result') }}">
+            <h1>경기 기록 추가</h1>
+            <div>
+                <label for="driver_no">드라이버:</label>
+                <select id="driver_no" name="driver_no">
+                    {% for driver in drivers %}
+                        <option value="{{ driver.DriverNo }}">{{ driver.DriverName }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div>
+                <label for="circuit_id">서킷:</label>
+                <select id="circuit_id" name="circuit_id">
+                    {% for circuit in circuits %}
+                        <option value="{{ circuit.CircuitID }}">{{ circuit.CircuitName }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div>
+                <label for="position">순위:</label>
+                <input type="number" id="position" name="position" placeholder="1 ~ 20" min="1" max="20" required>
+            </div>
+            
+            <div>
+                <label for="pts">포인트:</label>
+                <input type="number" id="pts" name="pts" placeholder = "0 ~ 34" min="0" max="34" required>
+            </div>
+            
+            <div>
+                <label>기록 (시, 분, 초):</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="number" id="hours" name="hours" placeholder="시" min="0" required>
+                    <input type="number" id="minutes" name="minutes" placeholder="분" min="0" max="59" required>
+                    <input type="number" id="seconds" name="seconds" placeholder="초 (소숫점 3자리)" step="0.001" min="0" max="59.999" required>
+                </div>
+            </div>
+            
+            <div>
+            <button type="submit">기록 추가하기</button>
+            </div>
+
+            <div>
+                <a href="{{ url_for('index') }}">홈으로 돌아가기</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
