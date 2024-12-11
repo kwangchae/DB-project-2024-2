@@ -88,6 +88,15 @@ def team_details(team_name):
 def show_circuits():
     conn = get_db_connection()
     circuits = conn.execute('SELECT * FROM Circuit ORDER BY Date').fetchall()
+    search_query = request.args.get('search', '').strip()
+    
+    if search_query:
+        circuits = conn.execute('''
+            SELECT * FROM Circuit WHERE CircuitName LIKE ? ORDER BY Date
+        ''', (f'{search_query}%',)).fetchall() 
+    else:
+        circuits = conn.execute('SELECT * FROM Circuit ORDER BY Date').fetchall()
+        
     conn.close()
     return render_template('circuits.html', circuits=circuits)
 
