@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>F1 경기 결과</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <h1>{{ results[0].CircuitName }} 그랑프리 결과</h1>
@@ -31,15 +32,16 @@
         <tbody>
             {% for result in results %}
             <td> {{ 'DSQ' if result.position == 40 else 'DNF' if result.position == 30 else 'P' + result.position|string }} </td>
-                <td>
+                <td class="driver-name">
                     <a href="{{ url_for('driver_details', driver_no=result.DriverNo) }}">{{ result.DriverName }}</a>
                 </td>
-                <td>
+                <td class="team-name">
                     <a href="{{ url_for('team_details', team_name=result.TeamName) }}">{{ result.TeamName }}</a>
                 </td>
                 <td>{{ result.Pts }}</td>
                 <td>{{ result.Time }}</td>
                 <td>{{ result.RaceComment }}</td>
+                
             </tr>
             {% endfor %}
         </tbody>
