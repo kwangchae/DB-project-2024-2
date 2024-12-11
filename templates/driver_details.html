@@ -38,7 +38,7 @@
             {% for result in results %}
             <tr class="podium-{{ result.Position if result.Position <= 3 else '' }}">
                 <td>{{ result.CircuitName }}</td>
-                <td>P{{ result.Position }}</td>
+                <td> {{ 'DSQ' if result.position == 40 else 'DNF' if result.position == 30 else 'P' + result.position|string }} </td>
                 <td>{{ result.Pts }}</td>
                 <td>{{ result.Time }}</td>
             </tr>
