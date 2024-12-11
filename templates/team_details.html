@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ team.TeamName }} - F1 팀 상세 정보</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="nav">
@@ -27,7 +28,7 @@
         {% for driver in drivers %}
         <div class="driver-card">
             <span class="driver-number">#{{ driver.DriverNo }}</span>
-            <a href="{{ url_for('driver_details', driver_no=driver.DriverNo) }}" class="driver-name">{{ driver.DriverName }}</a>
+            <a class="driver-name" href="{{ url_for('driver_details', driver_no=driver.DriverNo) }}">{{ driver.DriverName }}</a>
             <span class="driver-points">{{ driver.DriverPts }} 포인트</span>
         </div>
         {% endfor %}
@@ -47,7 +48,9 @@
         <tbody>
             {% for result in results %}
             <tr class="{% if result.Position <= 3 %}podium podium-{{ result.Position }}{% endif %}">
-                <td>{{ result.CircuitName }}</td>
+                <td>
+                    <a href="{{ url_for('show_results', circuit_id=result.CircuitID) }}">{{ result.CircuitName }}</a>
+                </td>
                 <td>
                     <a href="{{ url_for('driver_details', driver_no=result.DriverNo) }}">{{ result.DriverName }}</a>
                 </td>

@@ -161,3 +161,9 @@ a:hover {
 .team-comment{
     text-align:left;
 }
+
+/* 팀 상세 */
+.team-points {
+    font-size : 20px;
+    font-weight: bold;
+}
