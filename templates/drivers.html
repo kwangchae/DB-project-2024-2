@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>F1 드라이버 목록</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <h1>F1 드라이버 챔피언십</h1>
@@ -36,7 +37,7 @@
         <tbody>
             {% for driver in drivers %}
             <tr>
-                <td>{{ loop.index }}</td>
+                <td class="rank">{{ loop.index }}</td>
                 <td>
                     <div class="driver-info">
                         <span class="driver-number">#{{ driver.DriverNo }}</span>
@@ -44,10 +45,12 @@
                     </div>
                 </td>
                 <td>
-                    <a href="{{ url_for('team_details', team_name=driver.TeamID) }}">{{ driver.TeamID }}</a>
+                    <div class="team-info">
+                    <a class="team-name" href="{{ url_for('team_details', team_name=driver.TeamID) }}">{{ driver.TeamID }}</a>
+                    </div>
                 </td>
                 <td>{{ driver.DriverPts }}</td>
-                <td>{{ driver.DriverComment }}</td>
+                <td class="driver-comment">{{ driver.DriverComment }}</td>
             </tr>
             {% endfor %}
         </tbody>
