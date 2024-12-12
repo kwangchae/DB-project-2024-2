@@ -20,6 +20,7 @@
     <div class="team-header">
         <div class="team-info">
             <h1>{{ team.TeamName }}</h1>
+            <p class="team-points">컨스트럭터 코멘트 : {{ team.TeamComment if team.TeamComment else ""}}</p>
             <p class="team-points">컨스트럭터 포인트: {{ team.TeamPts }}</p>
         </div>
     </div>

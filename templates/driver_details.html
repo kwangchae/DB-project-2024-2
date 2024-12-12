@@ -18,9 +18,10 @@
     </div>
 
     <div class="driver-header">
-        <span class="driver-number2">#{{ driver.DriverNo }}</span>
+        <span class="driver-number2">드라이버 번호: #{{ driver.DriverNo }}</span>
         <div class="driver-info">
             <h1>{{ driver.DriverName }}</h1>
+            <p class="driver-team">드라이버 코멘트 : {{ driver.DriverComment if driver.DriverComment else ""}}</p>
             <p class="driver-team">소속팀: <a href="{{ url_for('team_details', team_name=driver.TeamID) }}">{{ driver.TeamID }}</a></p>
             <p class="driver-points">현재 포인트: {{ driver.DriverPts }}</p>
         </div>
