@@ -176,8 +176,9 @@ def show_results(circuit_id):
             AND r.CircuitID = ?
         ORDER BY r.Position
     ''', (circuit_id,)).fetchall()
+    circuits = conn.execute('SELECT * FROM Circuit WHERE CircuitID = ?', (circuit_id,)).fetchall()
     conn.close()
-    return render_template('results.html', results=results)
+    return render_template('results.html', results=results, circuits=circuits)
 
 # 경기 기록 추가
 @app.route('/result_add/', methods=['GET', 'POST'])

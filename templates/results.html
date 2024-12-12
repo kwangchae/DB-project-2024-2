@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>{{ results[0].CircuitName if results }} 그랑프리 결과</h1>
+    <h1>{{ results[0].CircuitName if results else circuits[0].CircuitName }} 그랑프리 결과</h1>
     
     <div class="nav">
         <div class="nav-links">
